@@ -28,7 +28,7 @@ export default class Game extends Phaser.Scene
    create()
    {
       // create background
-      this.add.image(240, 320, 'background')
+      this.add.image(240, 320, 'background').setScrollFactor(1, 0)
 
       // create the platform group
       this.platforms = this.physics.add.staticGroup()
@@ -76,7 +76,6 @@ export default class Game extends Phaser.Scene
             platform.body.updateFromGameObject()
          }
       })
-
       // find out from Arcade Physics if the player's physics body
       // is touching something below it
       const touchingDown = this.player.body.touching.down
