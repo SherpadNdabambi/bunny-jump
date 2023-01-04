@@ -48,6 +48,9 @@ export default class Game extends Phaser.Scene
       // load the carrot image
       this.load.image('carrot', 'assets/carrot.png')
 
+      // load the jump sound
+      this.load.audio('jump', 'assets/sfx/Jump.mp3')
+
       // create cursor keys
       this.cursors = this.input.keyboard.createCursorKeys()
    }
@@ -143,6 +146,9 @@ export default class Game extends Phaser.Scene
 
          // switch to jump texture
          this.player.setTexture('bunny-jump')
+
+         // play jump sound
+         this.sound.play('jump')
       }
 
       const vy = this.player.body.velocity.y
