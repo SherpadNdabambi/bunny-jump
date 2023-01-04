@@ -26,6 +26,11 @@ export default class Game extends Phaser.Scene
       super('game')
    }
 
+   init()
+   {
+      this.carrotsCollected = 0
+   }
+
    preload()
    {
       // load the backgound image
