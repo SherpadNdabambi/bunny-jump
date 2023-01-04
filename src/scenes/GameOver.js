@@ -16,5 +16,9 @@ export default class GameOver extends Phaser.Scene
          fontSize: 48
       })
       .setOrigin(0.5)
+
+      this.input.keyboard.once('keydown-SPACE', () => {
+         this.scene.start('game')
+      })
    }
 }
