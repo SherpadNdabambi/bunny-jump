@@ -2,6 +2,9 @@ import Phaser from '../lib/phaser.js'
 
 export default class Game extends Phaser.Scene
 {
+   /** @type {Phaser.Physics.Arcade.Sprite} */
+   player
+
    constructor()
    {
       super('game')
@@ -14,6 +17,9 @@ export default class Game extends Phaser.Scene
 
       // load the platform image
       this.load.image('platform', 'assets/ground_grass.png')
+
+      // load the standing bunny image
+      this.load.image('bunny-stand', 'assets/bunny1_stand.png')
    }
 
    create()
@@ -37,6 +43,33 @@ export default class Game extends Phaser.Scene
          /** @type {Phaser.Physics.Arcade.StaticBody} */
          const body = platform.body
          body.updateFromGameObject()
+      }
+
+      // create a bunny sprite
+      this.player = this.physics.add.sprite(240, 320, 'bunny-stand').setScale(0.5)
+
+      // add collision
+      this.physics.add.collider(this.platforms, this.player)
+
+      // disable other collisions
+      this.player.body.checkCollision.up = false
+      this.player.body.checkCollision.left = false
+      this.player.body.checkCollision.right = false
+
+      // follow rabbit
+      this.cameras.main.startFollow(this.player)
+   }
+
+   update()
+   {
+      // find out from Arcade Physics if the player's physics body
+      // is touching something below it
+      const touchingDown = this.player.body.touching.down
+
+      if (touchingDown)
+      {
+         // this makes the bunny jump straight up
+         this.player.setVelocityY(-300)
       }
    }
  }
