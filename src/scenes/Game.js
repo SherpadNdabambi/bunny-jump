@@ -34,7 +34,7 @@ export default class Game extends Phaser.Scene
    create()
    {
       // create background
-      this.add.image(240, 320, 'background').setScrollFactor(1,0)
+      this.add.image(240, 320, 'background').setScrollFactor(1, 0)
 
       // create the platform group
       this.platforms = this.physics.add.staticGroup()
@@ -109,6 +109,27 @@ export default class Game extends Phaser.Scene
       {
          // stop movement if not left or right
          this.player.setVelocityX(0)
+      }
+
+      // wrap player around
+      this.horizontalWrap(this.player)
+
+      // add player wrap-around logic
+      /**
+       * @param {Phaser.GameObjects.Sprite} sprite
+       */
+      horizontalWrap(sprite)
+      {
+         const halfWidth = sprite.displayWidth * 0.5
+         const gameWidth = this.scale.width
+         if (sprite.x < -halfWidth)
+         {
+            sprite.x = gameWidth + halfWidth
+         }
+         else if (sprite.x > gameWidth + halfWidth)
+         {
+            sprite.x = -halfWidth   
+         }
       }
    }
  }
