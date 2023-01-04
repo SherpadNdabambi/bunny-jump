@@ -2,6 +2,9 @@ import Phaser from '../lib/phaser.js'
 
 export default class Game extends Phaser.Scene
 {
+   /** @type {Phaser.Types.Input.Keyboard.CursorKeys} */
+   cursors
+
    /** @type {Phaser.Physics.Arcade.StaticGroup} */
    platforms
 
@@ -23,12 +26,15 @@ export default class Game extends Phaser.Scene
 
       // load the standing bunny image
       this.load.image('bunny-stand', 'assets/bunny1_stand.png')
+
+      // create cursor keys
+      this.cursors = this.input.keyboard.createCursorKeys()
    }
 
    create()
    {
       // create background
-      this.add.image(240, 320, 'background').setScrollFactor(1, 0)
+      this.add.image(240, 320, 'background').setScrollFactor(1,0)
 
       // create the platform group
       this.platforms = this.physics.add.staticGroup()
@@ -61,9 +67,12 @@ export default class Game extends Phaser.Scene
 
       // follow rabbit
       this.cameras.main.startFollow(this.player)
+
+      // set the horizontal dead zone to 1.5x game width
+      this.cameras.main.setDeadzone(this.scale.width * 1.5)
    }
 
-   update()
+   update(t, dt)
    {
       this.platforms.children.iterate(child => {
          /** @type {Phaser.Physics.Arcade.Sprite} */
@@ -76,6 +85,7 @@ export default class Game extends Phaser.Scene
             platform.body.updateFromGameObject()
          }
       })
+
       // find out from Arcade Physics if the player's physics body
       // is touching something below it
       const touchingDown = this.player.body.touching.down
@@ -84,6 +94,21 @@ export default class Game extends Phaser.Scene
       {
          // this makes the bunny jump straight up
          this.player.setVelocityY(-300)
+      }
+
+      // left and right input logic
+      if (this.cursors.left.isDown && !touchingDown)
+      {
+         this.player.setVelocityX(-200)
+      }
+      else if (this.cursors.right.isDown && !touchingDown)
+      {
+         this.player.setVelocityX(200)
+      }
+      else
+      {
+         // stop movement if not left or right
+         this.player.setVelocityX(0)
       }
    }
  }
