@@ -42,6 +42,9 @@ export default class Game extends Phaser.Scene
       // load the standing bunny image
       this.load.image('bunny-stand', 'assets/bunny1_stand.png')
 
+      // load the jumping bunny image
+      this.load.image('bunny-jump', 'assets/bunny1_jump.png')
+
       // load the carrot image
       this.load.image('carrot', 'assets/carrot.png')
 
@@ -137,6 +140,16 @@ export default class Game extends Phaser.Scene
       {
          // this makes the bunny jump straight up
          this.player.setVelocityY(-300)
+
+         // switch to jump texture
+         this.player.setTexture('bunny-jump')
+      }
+
+      const vy = this.player.body.velocity.y
+      if (vy > 0 && this.player.texture.key !== 'bunny-stand')
+      {
+         // switch back to jump when falling
+         this.player.setTexture('bunny-stand')
       }
 
       // left and right input logic
