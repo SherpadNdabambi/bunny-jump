@@ -171,10 +171,17 @@ export default class Game extends Phaser.Scene
       /** @type {Phaser.Physics.Arcade.Sprite} */
       const carrot = this.carrots.get(sprite.x, y, 'carrot')
 
+      // set active and visible
+      carrot.setActive(true)
+      carrot.setVisible(true)
+
       this.add.existing(carrot)
 
       // update the physics body size
       carrot.body.setSize(carrot.width, carrot.height)
+
+      // make sure body is enabed in the physics world
+      this.physics.world.enable(carrot)
 
       return carrot
    }
