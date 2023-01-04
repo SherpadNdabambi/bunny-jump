@@ -48,8 +48,14 @@ export default class Game extends Phaser.Scene
       // load the carrot image
       this.load.image('carrot', 'assets/carrot.png')
 
+      // load the carrot collect sound
+      this.load.audio('collect', 'assets/sfx/Collect.mp3')
+
       // load the jump sound
       this.load.audio('jump', 'assets/sfx/Jump.mp3')
+
+      // load the game song
+      this.load.audio('song', 'assets/sfx/Song.mp3')
 
       // create cursor keys
       this.cursors = this.input.keyboard.createCursorKeys()
@@ -57,6 +63,9 @@ export default class Game extends Phaser.Scene
 
    create()
    {
+      // play game song
+      this.sound.play('song')
+
       // create background
       this.add.image(240, 320, 'background').setScrollFactor(1, 0)
 
@@ -245,6 +254,9 @@ export default class Game extends Phaser.Scene
       // create new text value and set it
       const value = `Carrots: ${this.carrotsCollected}`
       this.carrotsCollectedText.text = value
+
+      // play the carrot collect sound
+      this.sound.play('collect')
    }
 
    findBottomMostPlatform()
