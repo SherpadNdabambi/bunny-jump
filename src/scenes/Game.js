@@ -151,6 +151,13 @@ export default class Game extends Phaser.Scene
 
       // wrap player around
       this.horizontalWrap(this.player)
+
+      // game over logic
+      const bottomPlatform = this.findBottomMostPlatform()
+      if (this.player.y > bottomPlatform.y + 200)
+      {
+         console.log('game over')
+      }
    }
 
    // add player wrap-around logic
@@ -214,5 +221,26 @@ export default class Game extends Phaser.Scene
       // create new text value and set it
       const value = `Carrots: ${this.carrotsCollected}`
       this.carrotsCollectedText.text = value
+   }
+
+   findBottomMostPlatform()
+   {
+      const platforms = this.platforms.getChildren()
+      let bottomPlatform = platforms[0]
+
+      for (let i = 1; i < platforms.length; ++i)
+      {
+         const platform = platforms[i]
+
+         // discard any platforms that are above current
+         if (platform.y < bottomPlatform.y)
+         {
+            continue
+         }
+
+         bottomPlatform = platform
+      }
+
+      return bottomPlatform
    }
  }
