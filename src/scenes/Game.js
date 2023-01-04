@@ -2,6 +2,9 @@ import Phaser from '../lib/phaser.js'
 
 export default class Game extends Phaser.Scene
 {
+   /** @type {Phaser.Physics.Arcade.StaticGroup} */
+   platforms
+
    /** @type {Phaser.Physics.Arcade.Sprite} */
    player
 
@@ -62,6 +65,18 @@ export default class Game extends Phaser.Scene
 
    update()
    {
+      this.platforms.children.iterate(child => {
+         /** @type {Phaser.Physics.Arcade.Sprite} */
+         const platform = child
+
+         const scrollY = this.cameras.main.scrollY
+         if (platform.y >= scrollY + 700)
+         {
+            platform.y = scrollY - Phaser.Math.Between(50, 100)
+            platform.body.updateFromGameObject()
+         }
+      })
+
       // find out from Arcade Physics if the player's physics body
       // is touching something below it
       const touchingDown = this.player.body.touching.down
