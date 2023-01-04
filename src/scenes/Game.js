@@ -4,6 +4,11 @@ import Carrot from '../game/Carrot.js'
 
 export default class Game extends Phaser.Scene
 {
+   carrotsCollected = 0
+
+   /** @type {Phaser.GameObjects.Text} */
+   carrotsCollectedText
+
    /** @type {Phaser.Physics.Arcade.Group} */
    carrots
 
@@ -95,6 +100,11 @@ export default class Game extends Phaser.Scene
          undefined,
          this
       )
+
+      const style = { color: '#000', fontSize: 24 }
+      this.carrotsCollectedText = this.add.text(240, 10, 'Carrots: 0', style)
+         .setScrollFactor(0)
+         .setOrigin(0.5, 0)
    }
 
    update(t, dt)
@@ -197,5 +207,12 @@ export default class Game extends Phaser.Scene
 
       // disable from physics world
       this.physics.world.disableBody(carrot.body)
+
+      // increment by 1
+      this.carrotsCollected++
+
+      // create new text value and set it
+      const value = `Carrots: ${this.carrotsCollected}`
+      this.carrotsCollectedText.text = value
    }
  }
